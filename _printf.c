@@ -1,19 +1,15 @@
 #include "main.h"
-
 /**
  * _printf - a function that produces output according to a format.
  * @format: c, s, %
- * Return: count 
+ * Return: count
  */
-
-
-
-int _printf(const char *format, ...)
+int _printf(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
 
-    int count = 0;  /* Counter for characters printed*/
+    int count = 0;
 
     for (int i = 0; format[i] != '\0'; i++)
     {
@@ -21,37 +17,74 @@ int _printf(const char *format, ...)
         {
             i++;
 
-            /* Handle format specifiers */
             if (format[i] == 'd')
             {
                 int value = va_arg(args, int);
-                count += printf("%d", value);
+                int num_digits = 0;
+                int temp = value;
+
+                if (temp < 0)
+                {
+                    _putchar('-');
+                    count++;
+                    temp = -temp;
+                }
+
+                while (temp != 0)
+                {
+                    num_digits++;
+                    temp /= 10;
+                }
+
+                if (value == 0)
+                {
+                    _putchar('0');
+                    count++;
+                }
+
+                while (value != 0)
+                {
+                    int digit = value % 10;
+                    _putchar('0' + digit);
+                    count++;
+                    value /= 10;
+                }
+
+                count += num_digits;
             }
             else if (format[i] == 'f')
             {
                 double value = va_arg(args, double);
-                count += printf("%f", value);
+                printf("%f", value);
+                count++;
             }
             else if (format[i] == 'c')
             {
                 int value = va_arg(args, int);
-                count += printf("%c", value);
+                _putchar(value);
+                count++;
             }
             else if (format[i] == 's')
             {
                 char* value = va_arg(args, char*);
-                count += printf("%s", value);
+                int j = 0;
+                while (value[j] != '\0')
+                {
+                    _putchar(value[j]);
+                    count++;
+                    j++;
+                }
             }
             else
             {
-                putchar('%');
+                _putchar('%');
                 putchar(format[i]);
                 count += 2;
             }
         }
         else
         {
-            putchar(format[i]);
+            _putchar(format[i]);
             count++;
         }
     }
@@ -59,3 +92,4 @@ int _printf(const char *format, ...)
     va_end(args);
     return count;
 }
+
