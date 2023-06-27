@@ -3,6 +3,8 @@
 int _printf(const char *format, ...);
 int _putchar(char c);
 
+#include<stdarg.h>
+
 int print_char(va_list types, char buffer[],
 	int flags, int width, int precision, int size);
 
